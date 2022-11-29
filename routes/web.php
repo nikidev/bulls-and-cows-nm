@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CoreGameLogicController;
 use App\Http\Controllers\GameSessionController;
 use Illuminate\Support\Facades\Route;
 
@@ -25,3 +26,4 @@ Route::get('/dashboard', function () {
 require __DIR__.'/auth.php';
 
 Route::get('/dashboard', [GameSessionController::class, 'index'])->name('dashboard');
+Route::post('/guessSecretNumber/{guessNumber}', [CoreGameLogicController::class, 'guessSecretNumber']);
