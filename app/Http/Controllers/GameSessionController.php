@@ -6,10 +6,12 @@ use App\Enums\GameStatus;
 use App\Models\GameSession;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class GameSessionController extends Controller
 {
-    public function index() {
+    public function index()
+    {
         $top10ByAttempts = DB::table('game_sessions as gs')
                         ->selectRaw('u.name, guess_attempts, TIMEDIFF(gs.updated_at, gs.created_at) as time')
                         ->join('users as u', 'gs.user_id', '=', 'u.id')
@@ -29,5 +31,12 @@ class GameSessionController extends Controller
 
 
         return view('dashboard', ['top10ByAttempts' => $top10ByAttempts, 'top10ByTime' => $top10ByTime]);
+    }
+
+    public function store()
+    {
+        return GameSession::create([
+            'user_id' => Auth::user()->id,
+        ]);
     }
 }

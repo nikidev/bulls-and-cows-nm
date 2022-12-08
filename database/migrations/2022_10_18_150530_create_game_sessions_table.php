@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('game_sessions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users');
-            $table->integer('guess_attempts')->unsigned();
+            $table->integer('guess_attempts')->unsigned()->nullable();
             $table->tinyInteger('is_won')->nullable();
             $table->timestamps();
         });

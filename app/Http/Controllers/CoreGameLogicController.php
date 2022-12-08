@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\GameStatus;
+use App\Models\GameSession;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CoreGameLogicController extends Controller
 {
@@ -93,7 +96,11 @@ class CoreGameLogicController extends Controller
         $attempts++;
 
         if ($bulls == 4) {
-            $this->printGreetingsMessage($attempts);
+            //$this->printGreetingsMessage($attempts);
+            GameSession::where('user_id', Auth::user()->id)->latest('user_id')->update([
+                'guess_attempts' => $attempts,
+                'is_won' => GameStatus::WON
+            ]);
             return;
         }
 
