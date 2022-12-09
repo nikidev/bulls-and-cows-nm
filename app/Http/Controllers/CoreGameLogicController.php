@@ -79,17 +79,12 @@ class CoreGameLogicController extends Controller
             return;
         }
 
-        for ($b = 0; $b <= 3; $b++) {
-            if ($guessNumber[$b] == $secretNumber[$b]) {
+        for ($i = 0; $i <= 3; $i++) {
+            if ($guessNumber[$i] == $secretNumber[$i]) {
                 $bulls++;
             }
-        }
-
-        for ($i = 0; $i <= 3; $i++) {
-            for ($j = 0; $j <= 3; $j++) {
-                if ($guessNumber[$j] == $secretNumber[$i] && $i != $j) {
-                    $cows++;
-                }
+            elseif (in_array($guessNumber[$i], $secretNumber)) {
+                $cows++;
             }
         }
 
@@ -125,5 +120,13 @@ class CoreGameLogicController extends Controller
         $attempts = 0;
 
         $this->compareNumbers($secretNumber, $guessNumber, $attempts);
+    }
+
+    public function quitGame($attempts)
+    {
+       return GameSession::where('user_id', Auth::user()->id)->latest('user_id')->update([
+            'guess_attempts' => $attempts,
+            'is_won' => GameStatus::SURRENDERED
+        ]);
     }
 }

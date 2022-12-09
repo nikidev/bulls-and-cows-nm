@@ -28,4 +28,4 @@ require __DIR__.'/auth.php';
 Route::get('/dashboard', [GameSessionController::class, 'index'])->name('dashboard');
 Route::post('gameSession/store', [GameSessionController::class, 'store']);
 
-Route::post('/guessSecretNumber/{guessNumber}', [CoreGameLogicController::class, 'guessSecretNumber']);
+Route::post('/secretNumber/{guessNumber}/guess', [CoreGameLogicController::class, 'guessSecretNumber']);
