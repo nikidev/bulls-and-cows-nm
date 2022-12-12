@@ -9,6 +9,10 @@ use Illuminate\Support\Facades\Auth;
 
 class CoreGameLogicController extends Controller
 {
+    public function __construct(
+        protected Request $request
+    ){}
+
     private function generateSecretNumber(): array
     {
         $advancedRules = true;
@@ -91,12 +95,10 @@ class CoreGameLogicController extends Controller
         $attempts++;
 
         if ($bulls == 4) {
-            //$this->printGreetingsMessage($attempts);
-            GameSession::where('user_id', Auth::user()->id)->latest('user_id')->update([
-                'guess_attempts' => $attempts,
-                'is_won' => GameStatus::WON
-            ]);
-            return;
+            $this->winGame($attempts);
+        }
+        elseif ($this->request->has('quitGame')) {
+            $this->quitGame($attempts);
         }
 
         return $this->compareNumbers($secretNumber, $guessNumber, $attempts);
@@ -122,11 +124,21 @@ class CoreGameLogicController extends Controller
         $this->compareNumbers($secretNumber, $guessNumber, $attempts);
     }
 
-    public function quitGame($attempts)
+    public function quitGame($attempts): void
     {
-       return GameSession::where('user_id', Auth::user()->id)->latest('user_id')->update([
+        $this->updateGameSessionStatus($attempts, GameStatus::SURRENDERED);
+    }
+
+    private function winGame($attempts): void
+    {
+        $this->updateGameSessionStatus($attempts, GameStatus::WON);
+    }
+
+    private function updateGameSessionStatus($attempts, $gameStatus): void
+    {
+        GameSession::where('user_id', Auth::user()->id)->latest('user_id')->update([
             'guess_attempts' => $attempts,
-            'is_won' => GameStatus::SURRENDERED
+            'is_won' => $gameStatus
         ]);
     }
 }

@@ -29,3 +29,4 @@ Route::get('/dashboard', [GameSessionController::class, 'index'])->name('dashboa
 Route::post('gameSession/store', [GameSessionController::class, 'store']);
 
 Route::post('/secretNumber/{guessNumber}/guess', [CoreGameLogicController::class, 'guessSecretNumber']);
+Route::post('/quitGame', [CoreGameLogicController::class, 'quitGame']);
