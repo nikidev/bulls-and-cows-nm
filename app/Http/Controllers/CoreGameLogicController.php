@@ -97,9 +97,6 @@ class CoreGameLogicController extends Controller
         if ($bulls == 4) {
             $this->winGame($attempts);
         }
-        elseif ($this->request->has('quitGame')) {
-            $this->quitGame($attempts);
-        }
 
         return $this->compareNumbers($secretNumber, $guessNumber, $attempts);
     }
@@ -124,17 +121,17 @@ class CoreGameLogicController extends Controller
         $this->compareNumbers($secretNumber, $guessNumber, $attempts);
     }
 
-    public function quitGame($attempts): void
+    public function quitGame(): void
     {
-        $this->updateGameSessionStatus($attempts, GameStatus::SURRENDERED);
+        $this->updateGameSessionStatus(GameStatus::SURRENDERED);
     }
 
     private function winGame($attempts): void
     {
-        $this->updateGameSessionStatus($attempts, GameStatus::WON);
+        $this->updateGameSessionStatus(GameStatus::WON, $attempts);
     }
 
-    private function updateGameSessionStatus($attempts, $gameStatus): void
+    private function updateGameSessionStatus($gameStatus, $attempts = null): void
     {
         GameSession::where('user_id', Auth::user()->id)->latest('user_id')->update([
             'guess_attempts' => $attempts,
