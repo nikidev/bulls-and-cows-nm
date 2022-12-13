@@ -133,7 +133,7 @@ class CoreGameLogicController extends Controller
 
     private function updateGameSessionStatus($gameStatus, $attempts = null): void
     {
-        GameSession::where('user_id', Auth::user()->id)->latest('user_id')->update([
+        GameSession::where('user_id', Auth::user()->id)->latest('id')->update([
             'guess_attempts' => $attempts,
             'is_won' => $gameStatus
         ]);
