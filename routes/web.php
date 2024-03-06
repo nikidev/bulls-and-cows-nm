@@ -26,7 +26,7 @@ Route::get('/dashboard', function () {
 require __DIR__.'/auth.php';
 
 Route::get('/dashboard', [GameSessionController::class, 'index'])->name('dashboard');
-Route::post('gameSession/store', [GameSessionController::class, 'store']);
+Route::post('gameSession/store', [GameSessionController::class, 'store'])->name('gameSession.store');
 
-Route::post('/secretNumber/{guessNumber}/guess', [CoreGameLogicController::class, 'guessSecretNumber']);
-Route::post('/quitGame', [CoreGameLogicController::class, 'quitGame']);
+Route::post('/secretNumber/guess', [CoreGameLogicController::class, 'guessSecretNumber'])->name('guessSecretNumber');
+Route::post('/quitGame', [CoreGameLogicController::class, 'quitGame'])->name('quitGame');

@@ -4,15 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Enums\GameStatus;
 use App\Models\GameSession;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class CoreGameLogicController extends Controller
 {
-    public function __construct(
-        protected Request $request
-    ){}
-
     private function generateSecretNumber(): array
     {
         $advancedRules = true;
@@ -34,7 +31,7 @@ class CoreGameLogicController extends Controller
         return $secretDigits;
     }
 
-    private function includeAdvancedRules(&$secretDigits): void
+    private function includeAdvancedRules(array &$secretDigits): void
     {
         $oneEightDigitsExist = in_array(1, $secretDigits) && in_array(8, $secretDigits);
         $fourDigitExist = in_array(4, $secretDigits);
@@ -68,20 +65,16 @@ class CoreGameLogicController extends Controller
         }
     }
 
-    private function moveDigit(&$secretDigits, $fromIndex, $toIndex)
+    private function moveDigit(array &$secretDigits, int $fromIndex, int $toIndex): void
     {
         $replacement = array_splice($secretDigits, $fromIndex, 1);
         array_splice($secretDigits, $toIndex, 0, $replacement);
     }
 
-    private function compareNumbers($secretNumber, $guessNumber, $attempts)
+    private function compareNumbers(array $secretNumber, array $guessNumber, int &$attempts): array
     {
         $bulls = 0;
         $cows = 0;
-
-        if ($this->checkForDuplicateDigits($guessNumber)) {
-            return;
-        }
 
         for ($i = 0; $i <= 3; $i++) {
             if ($guessNumber[$i] == $secretNumber[$i]) {
@@ -94,17 +87,9 @@ class CoreGameLogicController extends Controller
 
         $attempts++;
 
-        if ($bulls == 4) {
-            $this->winGame($attempts);
-        }
+        session(['attempts' => $attempts]);
 
-        return $this->compareNumbers($secretNumber, $guessNumber, $attempts);
-    }
-
-    private function printGreetingsMessage($attempts): string
-    {
-        echo "You won with $attempts attempts!";
-        return "You won with $attempts attempts!";
+        return ['bulls' => $bulls, 'cows'=> $cows];
     }
 
     private function checkForDuplicateDigits($digits): bool
@@ -112,26 +97,50 @@ class CoreGameLogicController extends Controller
         return count($digits) > count(array_unique($digits));
     }
 
-    public function guessSecretNumber($guessNumber)
+    public function guessSecretNumber(Request $request): RedirectResponse
     {
-        $secretNumber = $this->generateSecretNumber();
-        $guessNumber = array_map('intval', str_split($guessNumber));
-        $attempts = 0;
+        if (!session()->has('secretNumber')) {
+            $secretNumber = $this->generateSecretNumber();
+            session(['secretNumber' => $secretNumber]);
+        }
 
-        $this->compareNumbers($secretNumber, $guessNumber, $attempts);
+        $secretNumber = session('secretNumber');
+
+        $guessNumber = $request->input('guessNumber');
+
+        $guessNumber = array_map('intval', str_split($guessNumber));
+
+        $attempts = session('attempts', 0);
+
+        $result = $this->compareNumbers($secretNumber, $guessNumber, $attempts);
+        $result['guessNumber'] = implode($guessNumber);
+
+        if ($result['bulls'] == 4) {
+            $this->winGame();
+        }
+
+        return redirect()->back()->with('result', $result);
     }
 
-    public function quitGame(): void
+    public function quitGame(): RedirectResponse
     {
         $this->updateGameSessionStatus(GameStatus::SURRENDERED);
+        session()->forget(['secretNumber', 'attempts']);
+
+        return redirect()->back()->with('failureGameMessage', 'GAME OVER!');
     }
 
-    private function winGame($attempts): void
+    private function winGame(): void
     {
+        $attempts = session('attempts');
+
         $this->updateGameSessionStatus(GameStatus::WON, $attempts);
+        session()->forget(['secretNumber', 'attempts']);
+
+        redirect()->back()->with('successGameMessage', "You guessed the number with $attempts attempts !");
     }
 
-    private function updateGameSessionStatus($gameStatus, $attempts = null): void
+    private function updateGameSessionStatus(GameStatus $gameStatus, int $attempts = null): void
     {
         $gameSession = GameSession::where('user_id', Auth::user()->id)
                     ->latest('id')
