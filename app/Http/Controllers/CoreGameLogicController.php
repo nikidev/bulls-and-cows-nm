@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Enums\GameStatus;
+use App\Http\Requests\GuessNumberRequest;
 use App\Models\GameSession;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class CoreGameLogicController extends Controller
@@ -97,7 +97,7 @@ class CoreGameLogicController extends Controller
         return count($digits) > count(array_unique($digits));
     }
 
-    public function guessSecretNumber(Request $request): RedirectResponse
+    public function guessSecretNumber(GuessNumberRequest $request): RedirectResponse
     {
         if (!session()->has('secretNumber')) {
             $secretNumber = $this->generateSecretNumber();
