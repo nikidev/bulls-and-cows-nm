@@ -39,10 +39,7 @@ class CoreGameLogicController extends Controller
 
         if ($oneEightDigitsExist && $fourDigitExist && $fiveDigitExist) {
             $this->generateSecretNumber();
-            return;
         }
-
-        sort($secretDigits);
 
         if ($oneEightDigitsExist) {
             $indexOfOne = array_search(1, $secretDigits);
