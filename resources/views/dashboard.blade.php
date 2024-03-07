@@ -8,21 +8,21 @@
                     <div class="p-6 bg-white border-b border-gray-200">
                         <h1 class="text-3xl mb-4">Playground: Guess the number of 4 unique digits</h1>
 
-                        <div class="py-5 flex justify-center">
+                        <div class="py-5 mt-10 flex justify-center">
                             <form action="{{ route('gameSession.store') }}" method="POST">
                                 @csrf
                                 <button type="submit" class="bg-blue-500 text-white px-10 py-4 rounded uppercase">Start Game</button>
                             </form>
                         </div>
 
-                        <div class="py-5 flex justify-center">
+                        <div class="py-5 mt-5 flex justify-center">
                             <form action="{{ route('guessSecretNumber') }}" method="POST">
                                 @csrf
                                 <div class="flex items-center w-full mb-5">
                                     <input type="text"
                                            name="guessNumber"
                                            class="block border-0 border-b-2 border-gray-300 focus:ring-0 mr-7 w-80"
-                                           placeholder="Please enter a 4-digit number e.g:1234"
+                                           placeholder="Please, enter 4 unique digits e.g:1234"
                                            maxlength="4"
                                            pattern="^(?!.*(.).*\1)[0-9]{4}$"
                                            required
@@ -68,7 +68,7 @@
                             </div>
                         @endif
 
-                        <div class="py-5 flex justify-center">
+                        <div class="py-5 mt-20 flex justify-center">
                             <form action="{{ route('quitGame') }}" method="POST">
                                 @csrf
                                 <button type="submit" class="bg-red-500 text-white px-10 py-4 rounded uppercase">Quit Game</button>

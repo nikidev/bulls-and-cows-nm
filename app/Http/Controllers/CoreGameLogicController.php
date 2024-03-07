@@ -47,17 +47,29 @@ class CoreGameLogicController extends Controller
             $this->moveDigit($secretDigits, $indexOfOne, $indexOfEight);
         }
 
-        if ($fourDigitExist) {
-            $indexOfFour = array_search(4, $secretDigits);
-            if ($indexOfFour % 2 == 0) {
-                $this->moveDigit($secretDigits, $indexOfFour, 1);
-            }
-        }
+        $this->moveDigit4($secretDigits, $fourDigitExist);
+        $this->moveDigit5($secretDigits, $fiveDigitExist, $fourDigitExist);
+    }
 
+    private function moveDigit5(array &$secretDigits, bool $fiveDigitExist, bool $fourDigitExist): void
+    {
         if ($fiveDigitExist) {
+            $toIndex = 3;
             $indexOfFive = array_search(5, $secretDigits);
             if ($indexOfFive % 2 == 0) {
-                $this->moveDigit($secretDigits, $indexOfFive, 3);
+                $this->moveDigit($secretDigits, $indexOfFive, $toIndex);
+                $this->moveDigit4($secretDigits, $fourDigitExist);
+            }
+        }
+    }
+
+    private function moveDigit4(array &$secretDigits, bool $fourDigitExist): void
+    {
+        if ($fourDigitExist) {
+            $toIndex = 1;
+            $indexOfFour = array_search(4, $secretDigits);
+            if ($indexOfFour % 2 == 0) {
+                $this->moveDigit($secretDigits, $indexOfFour, $toIndex);
             }
         }
     }
