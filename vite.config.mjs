@@ -13,4 +13,9 @@ export default defineConfig({
         }),
         vue()
     ],
+    resolve: {
+        alias: {
+            '$': 'jQuery'
+        },
+    },
 });
