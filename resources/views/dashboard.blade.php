@@ -9,14 +9,14 @@
                         <h1 class="text-3xl mb-4">Playground: Guess the number of 4 unique digits</h1>
 
                         <div class="py-5 mt-10 flex justify-center">
-                            <form action="{{ route('gameSession.store') }}" method="POST">
+                            <form action="{{ route('gameSession.store') }}" method="POST" id="startGameForm">
                                 @csrf
                                 <button type="submit" class="bg-blue-500 text-white px-10 py-4 rounded uppercase">Start Game</button>
                             </form>
                         </div>
 
-                        <div class="py-5 mt-5 flex justify-center">
-                            <form action="{{ route('guessSecretNumber') }}" method="POST">
+                        <div class="py-5 mt-20 flex justify-center">
+                            <form action="{{ route('guessSecretNumber') }}" method="POST"  id="guessNumberForm">
                                 @csrf
                                 <div class="flex items-center w-full mb-5">
                                     <input type="text"
@@ -35,41 +35,28 @@
                             </form>
                         </div>
 
-                        @if (session('result'))
-                            <div class="py-5 flex justify-center">
-                                <table class="p-5 w-full bg-white shadow text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                    <thead class="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
-                                        <tr>
-                                            <th scope="col" class="px-6 py-3">Guess number</th>
-                                            <th scope="col" class="px-6 py-3">Bulls</th>
-                                            <th scope="col" class="px-6 py-3">Cows</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                            <td class="px-6 py-4">{{ session('result')['guessNumber'] }}</td>
-                                            <td class="px-6 py-4">{{ session('result')['bulls'] }}</td>
-                                            <td class="px-6 py-4">{{ session('result')['cows'] }}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        @endif
+                        <div class="py-5 flex justify-center">
+                            <table class="p-5 w-full bg-white shadow text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400" id="result-table">
+                                <thead class="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3">Guess number</th>
+                                        <th scope="col" class="px-6 py-3">Bulls</th>
+                                        <th scope="col" class="px-6 py-3">Cows</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
 
-                        @if(session('successGameMessage'))
-                            <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4" role="alert">
-                                <p class="font-bold uppercase text-center">{{ session('successGameMessage') }}</p>
-                            </div>
-                        @endif
+                        <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 success-game-message" role="alert">
+                        </div>
 
-                        @if(session('failureGameMessage'))
-                            <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4" role="alert">
-                                <p class="font-bold uppercase text-center">{{ session('failureGameMessage') }}</p>
-                            </div>
-                        @endif
+                        <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 failure-game-message" role="alert">
+                        </div>
 
                         <div class="py-5 mt-20 flex justify-center">
-                            <form action="{{ route('quitGame') }}" method="POST">
+                            <form action="{{ route('quitGame') }}" method="POST" id="quitGameForm">
                                 @csrf
                                 <button type="submit" class="bg-red-500 text-white px-10 py-4 rounded uppercase">Quit Game</button>
                             </form>

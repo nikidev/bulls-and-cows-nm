@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\GameStatus;
 use App\Http\Requests\GuessNumberRequest;
 use App\Models\GameSession;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 
 class CoreGameLogicController extends Controller
@@ -106,7 +106,7 @@ class CoreGameLogicController extends Controller
         return count($digits) > count(array_unique($digits));
     }
 
-    public function guessSecretNumber(GuessNumberRequest $request): RedirectResponse
+    public function guessSecretNumber(GuessNumberRequest $request): JsonResponse
     {
         if (!session()->has('secretNumber')) {
             $secretNumber = $this->generateSecretNumber();
@@ -125,28 +125,28 @@ class CoreGameLogicController extends Controller
         $result['guessNumber'] = implode($guessNumber);
 
         if ($result['bulls'] == 4) {
-            $this->winGame();
+           return $this->winGame();
         }
 
-        return redirect()->back()->with('result', $result);
+        return response()->json(['result' => $result]);
     }
 
-    public function quitGame(): RedirectResponse
+    public function quitGame(): JsonResponse
     {
         $this->updateGameSessionStatus(GameStatus::SURRENDERED);
         session()->forget(['secretNumber', 'attempts']);
 
-        return redirect()->back()->with('failureGameMessage', 'GAME OVER!');
+        return response()->json(['failureGameMessage' => 'GAME OVER!']);
     }
 
-    private function winGame(): void
+    private function winGame(): JsonResponse
     {
         $attempts = session('attempts');
 
         $this->updateGameSessionStatus(GameStatus::WON, $attempts);
         session()->forget(['secretNumber', 'attempts']);
 
-        redirect()->back()->with('successGameMessage', "You guessed the number with $attempts attempts !");
+        return response()->json(["successGameMessage" => "You guessed the number with $attempts attempts !"]);
     }
 
     private function updateGameSessionStatus(GameStatus $gameStatus, int $attempts = null): void

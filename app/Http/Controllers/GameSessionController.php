@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\GameStatus;
 use App\Models\GameSession;
 use App\Models\User;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -28,12 +28,12 @@ class GameSessionController extends Controller
         return view('dashboard', ['top10ByHighScoreUsers' => $top10ByHighScoreUsers]);
     }
 
-    public function store(): RedirectResponse
+    public function store(): JsonResponse
     {
         GameSession::create([
             'user_id' => Auth::user()->id,
         ]);
 
-        return redirect()->back();
+        return response()->json(['message' => 'The game started!']);
     }
 }
