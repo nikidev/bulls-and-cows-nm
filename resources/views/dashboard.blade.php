@@ -29,9 +29,7 @@
                                     >
                                     <button type="submit" class="bg-green-500 text-white px-10 py-4 rounded uppercase">Guess</button>
                                 </div>
-                                @error('guessNumber')
-                                    <div class="text-red-500">{{ $message }}</div>
-                                @enderror
+                                <div class="text-red-500 error-container"></div>
                             </form>
                         </div>
 

@@ -8,6 +8,7 @@ $(function () {
     const $successGameMessage = $('.success-game-message')
     const $resultTable = $('#result-table');
     const $resultList = $('#result-table tbody');
+    const $errorContainer = $('.error-container');
 
     $guessNumberForm.hide();
     $quitGameForm.hide();
@@ -36,6 +37,8 @@ $(function () {
             type: $(this).attr('method'),
             data: $(this).serialize(),
             success: function (response) {
+                $errorContainer.empty();
+
                 if (response.successGameMessage) {
                     $successGameMessage.show().
                     html('<p class="font-bold uppercase text-center">' + response.successGameMessage + '</p>');
@@ -57,6 +60,10 @@ $(function () {
                 $('<td class="px-6 py-4">').text(response.result.guessNumber).appendTo($newRow)
                 $('<td class="px-6 py-4">').text(response.result.bulls).appendTo($newRow)
                 $('<td class="px-6 py-4">').text(response.result.cows).appendTo($newRow)
+            },
+            error: function (xhr, status, error) {
+                const requestError = xhr.responseJSON.errors.guessNumber[0];
+                $errorContainer.text(requestError);
             }
         });
 
