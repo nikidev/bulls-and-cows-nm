@@ -36,6 +36,19 @@ $(function () {
             type: $(this).attr('method'),
             data: $(this).serialize(),
             success: function (response) {
+                if (response.successGameMessage) {
+                    $successGameMessage.show().
+                    html('<p class="font-bold uppercase text-center">' + response.successGameMessage + '</p>');
+                    setTimeout(() => {
+                        $successGameMessage.empty().hide();
+                        $resultList.empty().hide();
+                        $resultTable.hide();
+                        $guessNumberForm.hide();
+                        $quitGameForm.hide();
+                        $startGameForm.show();
+                    }, 1500);
+                }
+
                 $resultTable.show();
 
                 const $newRow = $('<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">')
@@ -44,18 +57,6 @@ $(function () {
                 $('<td class="px-6 py-4">').text(response.result.guessNumber).appendTo($newRow)
                 $('<td class="px-6 py-4">').text(response.result.bulls).appendTo($newRow)
                 $('<td class="px-6 py-4">').text(response.result.cows).appendTo($newRow)
-
-                if (response.successGameMessage) {
-                    $successGameMessage.show().
-                    html('<p class="font-bold uppercase text-center">' + response.successGameMessage + '</p>');
-                    setTimeout(() => {
-                        $successGameMessage.empty().hide();
-                        $resultList.empty().hide();
-                        $guessNumberForm.hide();
-                        $quitGameForm.hide();
-                        $startGameForm.show();
-                    }, 1000);
-                }
             }
         });
 
@@ -75,6 +76,7 @@ $(function () {
                 setTimeout(() => {
                     $failureGameMessage.empty().hide();
                     $resultList.empty().hide();
+                    $resultTable.hide();
                     $guessNumberForm.hide();
                     $quitGameForm.hide();
                     $startGameForm.show();
