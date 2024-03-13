@@ -136,17 +136,20 @@ class CoreGameLogicController extends Controller
         $this->updateGameSessionStatus(GameStatus::SURRENDERED);
         session()->forget(['secretNumber', 'attempts']);
 
-        return response()->json(['failureGameMessage' => 'GAME OVER!']);
+        return response()->json(["failureGameMessage" => "GAME OVER! [Wait to reload ...]"]);
     }
 
     private function winGame(): JsonResponse
     {
         $attempts = session('attempts');
+        $secretNumber = implode(session('secretNumber'));
 
         $this->updateGameSessionStatus(GameStatus::WON, $attempts);
         session()->forget(['secretNumber', 'attempts']);
 
-        return response()->json(["successGameMessage" => "You guessed the number with $attempts attempts !"]);
+        return response()->json(
+            ["successGameMessage" => "You guessed the number $secretNumber with $attempts attempts ! [Wait to reload ...]"]
+        );
     }
 
     private function updateGameSessionStatus(GameStatus $gameStatus, int $attempts = null): void

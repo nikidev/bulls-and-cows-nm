@@ -38,8 +38,11 @@ $(function () {
             data: $(this).serialize(),
             success: function (response) {
                 $errorContainer.empty();
+                $resultTable.show();
+                $resultList.show();
 
                 if (response.successGameMessage) {
+                    $quitGameForm.hide();
                     $successGameMessage.show().
                     html('<p class="font-bold uppercase text-center">' + response.successGameMessage + '</p>');
                     setTimeout(() => {
@@ -47,19 +50,16 @@ $(function () {
                         $resultList.empty().hide();
                         $resultTable.hide();
                         $guessNumberForm.hide();
-                        $quitGameForm.hide();
                         $startGameForm.show();
-                    }, 1500);
+                    }, 6000);
+                } else {
+                    const $newRow = $('<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">')
+                        .appendTo($resultList);
+
+                    $('<td class="px-6 py-4">').text(response.result.guessNumber).appendTo($newRow);
+                    $('<td class="px-6 py-4">').text(response.result.bulls).appendTo($newRow);
+                    $('<td class="px-6 py-4">').text(response.result.cows).appendTo($newRow);
                 }
-
-                $resultTable.show();
-
-                const $newRow = $('<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">')
-                    .appendTo($resultList);
-
-                $('<td class="px-6 py-4">').text(response.result.guessNumber).appendTo($newRow)
-                $('<td class="px-6 py-4">').text(response.result.bulls).appendTo($newRow)
-                $('<td class="px-6 py-4">').text(response.result.cows).appendTo($newRow)
             },
             error: function (xhr, status, error) {
                 const requestError = xhr.responseJSON.errors.guessNumber[0];
@@ -87,7 +87,7 @@ $(function () {
                     $guessNumberForm.hide();
                     $quitGameForm.hide();
                     $startGameForm.show();
-                }, 1000);
+                }, 3000);
             }
         });
     });

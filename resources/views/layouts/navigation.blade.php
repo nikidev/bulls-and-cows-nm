@@ -10,7 +10,7 @@
 
                 <!-- Brand Name -->
                 <div class="sm:ml-5 py-5 sm:flex">
-                    <h1 class="text-lg font-bold text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400">Bulls and cows</h1>
+                    <h1 class="text-lg font-bold text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400">Bulls and cows (NM&trade;)</h1>
                 </div>
             </div>
 
