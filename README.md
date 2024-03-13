@@ -14,6 +14,7 @@
  - [Important files and directories where to look](#important-files-and-directories-where-to-look)
  - [Implemented Modifications (number input and number generation)](#implemented-modifications-number-input-and-number-generation)
  - [Used technologies](#used-technologies)
+ - [Installation instructions](#installation-instructions)
  - [Additional planned features](#additional-planned-features)
 
 ## Screenshots:
@@ -52,7 +53,12 @@
 - [app/Enums/GameStatus.php](https://github.com/nikidev/bulls-and-cows-nm/blob/main/app/Enums/GameStatus.php)
 - [resources/js/components/forms.js](https://github.com/nikidev/bulls-and-cows-nm/blob/main/resources/js/components/forms.js)
 - [resources/views/dashboard.blade.php](https://github.com/nikidev/bulls-and-cows-nm/blob/main/resources/views/dashboard.blade.php)
+- [resources/views/welcome.blade.php](https://github.com/nikidev/bulls-and-cows-nm/blob/main/resources/views/welcome.blade.php)
+- [resources/views/layouts/navigation.blade.php](https://github.com/nikidev/bulls-and-cows-nm/blob/main/resources/views/layouts/navigation.blade.php)
 - [database/migrations/2022_10_18_150530_create_game_sessions_table.php](https://github.com/nikidev/bulls-and-cows-nm/blob/main/database/migrations/2022_10_18_150530_create_game_sessions_table.php)
+- [app/Models/GameSession.php](https://github.com/nikidev/bulls-and-cows-nm/blob/main/app/Models/GameSession.php)
+- [app/Models/User.php](https://github.com/nikidev/bulls-and-cows-nm/blob/main/app/Models/User.php)
+- [routes/web.php](https://github.com/nikidev/bulls-and-cows-nm/blob/main/routes/web.php)
 
 ## Implemented Modifications (number input and number generation)
 - [x] User should find out randomly generated 4 unique digit number
@@ -69,10 +75,22 @@
  - TailWind CSS
  - Laravel Sail (Docker and Docker-compose)
  - MySQL
+ - Eloquent ORM
  - Composer
  - NPM
 
+## Installation instructions:
+ 1. Prerequisites - Install Docker and Docker-compose
+ 2. Clone the current repository.
+ 3. [Install the composer dependencies](https://laravel.com/docs/9.x/sail#installing-composer-dependencies-for-existing-projects)
+ 4. Change the .env configuration for DB (mysql)
+ 5. Run the migrations (sail php artisan:migrate)
+ 6. sail npm install
+ 7. sail up
+ 8. sail npm run dev (in a separate terminal)
+
 ## Additional planned features:
  - Add a reload button to request the Top 10 leaderboard results via AJAX (not by page refresh)
+ - Deploy the application on VPS
 
 ## Made by: Nikolay Mikov
