@@ -84,7 +84,7 @@
  2. Clone the current repository.
  3. [Install the composer dependencies](https://laravel.com/docs/9.x/sail#installing-composer-dependencies-for-existing-projects)
  4. Change the .env configuration for DB (mysql)
- 5. Run the migrations (sail php artisan:migrate)
+ 5. Run the migrations (sail artisan migrate)
  6. sail npm install
  7. sail up
  8. sail npm run dev (in a separate terminal)
