@@ -11,6 +11,7 @@
 - [database/migrations/2022_10_18_150530_create_game_sessions_table.php](https://github.com/nikidev/bulls-and-cows-nm/blob/main/database/migrations/2022_10_18_150530_create_game_sessions_table.php)
 
 ### Used technologies:
+ - PHP 8.1
  - Laravel 9
  - Laravel Breeze (and Authentication)
  - jQuery (Ajax)
@@ -20,5 +21,8 @@
  - MySQL
  - Composer
  - NPM
+
+### Additional planned features:
+ - Reload button to request the Top 10 leaderboard results via AJAX
 
 ### Made by: Nikolay Mikov
