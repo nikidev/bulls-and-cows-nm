@@ -45,31 +45,30 @@ class CoreGameLogicController extends Controller
             $indexOfOne = array_search(1, $secretDigits);
             $indexOfEight = array_search(8, $secretDigits);
             $this->moveDigit($secretDigits, $indexOfOne, $indexOfEight);
+            $this->moveDigit4($secretDigits, $fourDigitExist, toIndex: 1, skippedIndexes: 2);
+            $this->moveDigit5($secretDigits, $fiveDigitExist, toIndex: 3, skippedIndexes: 2);
+        } else {
+            $this->moveDigit4($secretDigits, $fourDigitExist, toIndex: 3);
+            $this->moveDigit5($secretDigits, $fiveDigitExist, toIndex: 1);
         }
-
-        $this->moveDigit4($secretDigits, $fourDigitExist);
-        $this->moveDigit5($secretDigits, $fiveDigitExist, $fourDigitExist);
     }
 
-    private function moveDigit5(array &$secretDigits, bool $fiveDigitExist, bool $fourDigitExist): void
+    private function moveDigit5(array &$secretDigits, bool $fiveDigitExist, int $toIndex, int $skippedIndexes = 0): void
     {
         if ($fiveDigitExist) {
-            $toIndex = 3;
             $indexOfFive = array_search(5, $secretDigits);
             if ($indexOfFive % 2 == 0) {
-                $this->moveDigit($secretDigits, $indexOfFive, $toIndex);
-                $this->moveDigit4($secretDigits, $fourDigitExist);
+                $this->moveDigit($secretDigits, $indexOfFive, $toIndex - $skippedIndexes);
             }
         }
     }
 
-    private function moveDigit4(array &$secretDigits, bool $fourDigitExist): void
+    private function moveDigit4(array &$secretDigits, bool $fourDigitExist, int $toIndex, int $skippedIndexes = 0): void
     {
         if ($fourDigitExist) {
-            $toIndex = 1;
             $indexOfFour = array_search(4, $secretDigits);
             if ($indexOfFour % 2 == 0) {
-                $this->moveDigit($secretDigits, $indexOfFour, $toIndex);
+                $this->moveDigit($secretDigits, $indexOfFour, $toIndex + $skippedIndexes);
             }
         }
     }
