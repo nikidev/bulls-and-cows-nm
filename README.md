@@ -2,6 +2,15 @@
 
 ## Table of Contents
  - [Screenshots](#screenshots)
+    - [Login or Register](#login-or-register)
+    - [Login](#login)
+    - [Main screen with playground and top 10 leaderboard](#main-screen-with-playground-and-top-10-leaderboard)
+    - [Playground: (Game started)](#playground-game-started)
+    - [Playground: (Game In progress)](#playground-game-in-progress)
+    - [Playground: (Game Won) (Automatic reload)](#playground-game-won-automatic-reload)
+    - [Playground: (Game Lost) (Automatic reload)](#playground-game-lost-automatic-reload)
+    - [Playground: (Client side validation)](#playground-client-side-validation)
+    - [Playground: (Server side validation)](#playground-server-side-validation)
  - [Important files and directories where to look](#important-files-and-directories-where-to-look)
  - [Implemented Modifications (number input and number generation)](#implemented-modifications-number-input-and-number-generation)
  - [Used technologies](#used-technologies)
@@ -64,6 +73,6 @@
  - NPM
 
 ## Additional planned features:
- - Reload button to request the Top 10 leaderboard results via AJAX
+ - Add a reload button to request the Top 10 leaderboard results via AJAX (not by page refresh)
 
 ## Made by: Nikolay Mikov
